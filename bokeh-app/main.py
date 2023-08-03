@@ -7,8 +7,8 @@ import pandas as pd
 import numpy as np
 from bokeh.models import HoverTool
 
-df = pd.read_sas(r'univariate24_plotdata.sas7bdat',format='sas7bdat', encoding='iso-8859-1')
-pvals = pd.read_sas(r'univariate24_fdr.sas7bdat',format='sas7bdat', encoding='iso-8859-1')
+df = pd.read_sas('./univariate24_plotdata.sas7bdat',format='sas7bdat', encoding='iso-8859-1')
+pvals = pd.read_sas('./univariate24_fdr.sas7bdat',format='sas7bdat', encoding='iso-8859-1')
 
 predictor_dict = {'donorparity': 'Donor parity','idbloodgroupcat': 'ABO identical transfusion','meandonationtime': 'Time of donation','meandonorage': 'Age of Donor','meandonorhb': 'Donor Hb','meandonorsex': 'Donor sex','meanstoragetime': 'Storage time (days)','meanweekday': 'Weekday of donation','numdoncat': 'Donors prior number of donations','timesincecat': 'Time since donors previous donation'}
 label_dict = {'ALAT': 'ALT','ALB': 'Albumin','ALP': 'ALP','APTT': 'aPTT','ASAT': 'AST','BASOF': 'Basophiles','BE': 'Base Excess','BILI': 'Bilirubin','BILI_K': 'Conjugated bilirubin','BLAST': 'Blast cells','CA': 'Calcium','CA_F': 'Free Calcium','CL': 'Chloride','CO2': 'Carbon Dioxide','COHB': 'CO-Hb','CRP': 'CRP','EGFR': 'eGFR','EOSINO': 'Eosinophile count','ERYTRO': 'Erythrocyte count','ERYTROBL': 'Erythroblasts','EVF': 'EVF','FE': 'Iron','FERRITIN': 'Ferritin','FIB': 'Fibrinogen','GLUKOS': 'Glucose','GT': 'Glutamyl transferase','HAPTO': 'Haptoglobin','HB': 'Hemoglobin','HBA1C': 'HbA1c','HCT': 'Hematocrit','INR': 'INR','K': 'Potassium','KREA': 'Creatinine','LAKTAT': 'Lactate','LD': 'Lactate dehydrogenase','LPK': 'Leukocyte count','LYMF': 'Lymphocyte count','MCH': 'Mean corpuscular  hemoglobin','MCHC': 'Mean corpuscular  hemoglobin concentration','MCV': 'Mean corpuscular volume','META': 'Metamyelocyte count','METHB': 'Methemoglobin','MONO': 'Monocyte count','MYELO': 'Myelocyte count','NA': 'Sodium','NEUTRO': 'Neutrophile count','NTPROBNP': 'NT-ProBNP','OSMO': 'Osmolality','PCO2': 'PaCO2','PH': 'pH','PO2': 'PaO2','RET': 'Reticulocyte count','STDBIK': 'Standard bicarbonate','TPK': 'Platelet count','TRI': 'Triglycerides','TROP_I': 'Troponin I','TROP_T': 'Troponin T'}
