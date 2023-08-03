@@ -3,6 +3,7 @@ dependencies:
   - pip
   - pandas
   - numpy
+  - bokeh.models
   - pip:
     - nbserverproxy
     - jupyter-server-proxy
