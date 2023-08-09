@@ -7,8 +7,10 @@ import pandas as pd
 import numpy as np
 from bokeh.models import HoverTool
 
-df = pd.read_sas('./univariate24_plotdata.sas7bdat',format='sas7bdat', encoding='iso-8859-1')
-pvals = pd.read_sas('./univariate24_fdr.sas7bdat',format='sas7bdat', encoding='iso-8859-1')
+df = pd.read_csv('./plotdata24.csv')
+pvals = pd.read_csv('./fdr24.csv')
+df=df.dropna()
+pvals=pvals.dropna()
 
 predictor_dict = {'donorparity': 'Donor parity','idbloodgroupcat': 'ABO identical transfusion','meandonationtime': 'Time of donation','meandonorage': 'Age of Donor','meandonorhb': 'Donor Hb','meandonorsex': 'Donor sex','meanstoragetime': 'Storage time (days)','meanweekday': 'Weekday of donation','numdoncat': 'Donors prior number of donations','timesincecat': 'Time since donors previous donation'}
 label_dict = {'ALAT': 'ALT','ALB': 'Albumin','ALP': 'ALP','APTT': 'aPTT','ASAT': 'AST','BASOF': 'Basophiles','BE': 'Base Excess','BILI': 'Bilirubin','BILI_K': 'Conjugated bilirubin','BLAST': 'Blast cells','CA': 'Calcium','CA_F': 'Free Calcium','CL': 'Chloride','CO2': 'Carbon Dioxide','COHB': 'CO-Hb','CRP': 'CRP','EGFR': 'eGFR','EOSINO': 'Eosinophile count','ERYTRO': 'Erythrocyte count','ERYTROBL': 'Erythroblasts','EVF': 'EVF','FE': 'Iron','FERRITIN': 'Ferritin','FIB': 'Fibrinogen','GLUKOS': 'Glucose','GT': 'Glutamyl transferase','HAPTO': 'Haptoglobin','HB': 'Hemoglobin','HBA1C': 'HbA1c','HCT': 'Hematocrit','INR': 'INR','K': 'Potassium','KREA': 'Creatinine','LAKTAT': 'Lactate','LD': 'Lactate dehydrogenase','LPK': 'Leukocyte count','LYMF': 'Lymphocyte count','MCH': 'Mean corpuscular  hemoglobin','MCHC': 'Mean corpuscular  hemoglobin concentration','MCV': 'Mean corpuscular volume','META': 'Metamyelocyte count','METHB': 'Methemoglobin','MONO': 'Monocyte count','MYELO': 'Myelocyte count','NA': 'Sodium','NEUTRO': 'Neutrophile count','NTPROBNP': 'NT-ProBNP','OSMO': 'Osmolality','PCO2': 'PaCO2','PH': 'pH','PO2': 'PaO2','RET': 'Reticulocyte count','STDBIK': 'Standard bicarbonate','TPK': 'Platelet count','TRI': 'Triglycerides','TROP_I': 'Troponin I','TROP_T': 'Troponin T'}
@@ -28,7 +30,7 @@ def create_figure(current_predictor, current_label):
 
 
     if current_predictor in ['donorparity', 'idbloodgroupcat', 'meandonorsex', 'meanweekday', 'numdoncat', 'timesincecat']:
-        p.circle(df_current['predictorvalue'], df_current['pred'], size=5)
+        p.circle(df_current['predictorvalue'], df_current['predicted'], size=10)
         p.add_layout(
             Whisker(source=ColumnDataSource(df_current), base="predictorvalue", upper="upper", lower="lower")
         )
@@ -38,18 +40,18 @@ def create_figure(current_predictor, current_label):
         band = Band(base='predictorvalue', lower='lower', upper='upper', source=source, level='underlay',
                     fill_alpha=0.2, line_width=1, line_color='black')
         p.add_layout(band)
-        p.line(df_current['predictorvalue'], df_current['pred'], line_width=2)
+        p.line(df_current['predictorvalue'], df_current['predicted'], line_width=2)
     
     p.yaxis.axis_label = "Delta %s (95%% CI)" % label_dict[current_label]
     p.xaxis.axis_label = predictor_dict[current_predictor]
     
-    p.title.text_font_size = '14pt'
-    p.title.align = 'center'
+    p.title.text_font_size = '12pt'
+    p.title.align = 'left'
     
     x_start = df_current['predictorvalue'].min()
     x_end = df_current['predictorvalue'].max()
-    y_start = df_current[['lower', 'pred', 'upper']].min().min()
-    y_end = df_current[['lower', 'pred', 'upper']].max().max()
+    y_start = df_current[['lower', 'predicted', 'upper']].min().min()
+    y_end = df_current[['lower', 'predicted', 'upper']].max().max()
 
     # Add 10% padding to ranges
     x_padding = (x_end - x_start) * 0.05
